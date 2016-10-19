@@ -1,0 +1,4 @@
+@charset "UTF-8";
+@import "sprite";
+.icon1{@include sprite-info($icons,tel);}
+.icon2{@include sprite-info($icons,qq);}
