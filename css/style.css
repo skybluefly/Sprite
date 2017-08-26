@@ -1,5 +1,11 @@
-.icon1 { width: 0.28rem; height: 0.42rem; background-image: url('../images/icons-s927f525117.png'); background-position: -0.36rem 0; background-size: 0.72rem 0.42rem; background-repeat: no-repeat; display: inline-block; }
+.sprite-block, .icons-1, .icons-2, .other1, .other2 { display: inline-block; }
 
-.icon2 { width: 0.28rem; height: 0.42rem; background-image: url('../images/icons-s927f525117.png'); background-position: 0 0; background-size: 0.72rem 0.42rem; background-repeat: no-repeat; display: inline-block; }
+.sprite-block, .icons-1, .icons-2, .other1, .other2 { background-image: url('../images/icons-s1a2b006496.png'); background-repeat: no-repeat; }
+
+.icons-1 { background-position: 0 0; height: 42px; width: 28px; }
+
+.icons-2, .other1 { background-position: 0 -42px; height: 42px; width: 28px; }
+
+.other2 { background-position: 0 -42px; height: 42px; width: 28px; }
 
 /*# sourceMappingURL=style.css.map */
