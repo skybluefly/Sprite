@@ -9,5 +9,5 @@ $icons-sprite-base-class:'.sprite-block';//为每一个图标添加上面的样�
 @import "icons/*.png";  // 在images定义一个名为“icons”的文件夹存放小图标
 @include all-icons-sprites; // (为每一个图片生成代码)
 .other1{@extend .icons-2;}
-.other2{@include icons-sprite(2);}
+.other2{@include icons-sprite(2)}
 //用了两种方式来引用第二个图标，从渲染的结果来看，用extend更好一点，不过最后通过gulp、grunt这些工具压缩，这个问题也就忽略吧
