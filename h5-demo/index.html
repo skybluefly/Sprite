@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+	<script>
+   !(function(doc, win, size) {
+       var pixelRatio = 1 / window.devicePixelRatio;
+       document.write('<meta name="viewport" content="width=device-width,initial-scale=' + pixelRatio + ',minimum-scale=' + pixelRatio + ',maximum-scale=' + pixelRatio + ',user-scalable=no" />');
+       var docEle = doc.documentElement,
+           evt = "onorientationchange" in window ? "orientationchange" : "resize",
+           fn = function() {
+               var width = docEle.clientWidth;
+               docEle.style.fontSize = (width / size) * 100 + "px";
+           };
+       fn();
+       win.addEventListener(evt, fn, false);
+       /*doc.addEventListener("DOMContentLoaded", fn, false);*/
+   }(document, window, 750));
+   </script>
+    <link rel="stylesheet" href="css/h5-style.css">
+</head>
+<body>
+<div class="icons-1"></div>
+<div class="icons-2"></div>
+</body>
+</html>

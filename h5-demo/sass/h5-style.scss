@@ -1,7 +1,6 @@
 @charset "UTF-8";
 @import "compass";
 @import "compass/utilities/sprites";
-
 $icons: sprite-map("icons/*.png", $spacing: 8px, $layout: horizontal);
 $base-fonts-default: 100px; //基准数
 @function rem($px) {
@@ -23,15 +22,25 @@ $base-fonts-default: 100px; //基准数
         }
     }
 }
-
-@mixin sprite-info ($icons, $name) {
+%same-style{
+	background-image: sprite-url($icons);
+	$bigWidth: ceil(image-width(sprite-path($icons)));
+	$bigHeight: ceil(image-height(sprite-path($icons)));
+	background-size: rem(($bigWidth, $bigHeight));
+	background-repeat: no-repeat;
+	display: inline-block;
+}
+@mixin sprite ($name) {
     width: rem(image-width(sprite-file($icons, $name)));
     height: rem(image-height(sprite-file($icons, $name)));
-    background-image: sprite-url($icons);
     background-position: rem(sprite-position($icons, $name));
-    $bigWidth: ceil(image-width(sprite-path($icons)));
-    $bigHeight: ceil(image-height(sprite-path($icons)));
-    background-size: rem(($bigWidth, $bigHeight));
-    background-repeat: no-repeat;
-    display: inline-block
+    @extend %same-style;
 }
+
+
+@for $i from 1 through 2 {
+    .icons-#{$i} {
+       @include sprite ($i)
+    }
+}
+.other{@extend .icons-1}

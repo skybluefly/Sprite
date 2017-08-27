@@ -8,13 +8,13 @@
 
 1、用软件生成：   
 - photoshop   
-- [css雪碧图简单制作工具](https://github.com/iwangx/sprite "css雪碧图简单制作工具")  
+- [css雪碧图简单制作工具](https://github.com/iwangx/sprite "css雪碧图简单制作工具")
+ 
 2、用构建工具
 - sass
 - gulp、grunt、webpack.....
 
-用photoshop 这种刀耕火种年代的工具自然不能作为推荐，个人觉得CssSprite 这软件特别好用，而且还能用在移动端，详细介绍可以看这篇[css sprite css雪碧图生成工具](http://developer.51cto.com/art/201504/474506.htm "css sprite css雪碧图生成工具")。
-然后说说构建工具，我用的sass比较多，然后发现sass其实对sprite研究颇深。。。如果用在大项目上，自然得配合上gulp、grunt、webpack来用才好。
+用photoshop 这种刀耕火种年代的工具自然不能作为推荐，个人觉得CssSprite 这软件特别好用，而且还能用在移动端，详细介绍可以看这篇[css sprite css雪碧图生成工具](http://developer.51cto.com/art/201504/474506.htm "css sprite css雪碧图生成工具")。我一般是先考虑用sass，若不行就改为用这个软件了，sass其实对sprite研究颇深。。。如果用在大项目上，自然得配合上gulp、grunt、webpack来用才好。
 
 -----------------------------------我是华丽的分割线-------------------------------------------
 
@@ -46,11 +46,89 @@ $icons-sprite-base-class:'.sprite-block';//为每一个图标添加上面的样�
 .icons-2, .other1 { background-position: 0 -42px; height: 42px; width: 28px; }
 .other2 { background-position: 0 -42px; height: 42px; width: 28px; }
 ```
-
+-----------------------------------我是华丽的分割线-------------------------------------------
 ## 移动端
- - 只有一个配置需要根据自身项目来修改的： $base-fonts-default: 100px; //基准数，也就是对应你的media css或者js换算基准。
- 
- - 详细设置原理参考[使用sass与compass合并雪碧图][1]博文
+demo里面pc-sprite.scss的配置项如下：
+移动端就复杂点了，因为要做成自适应，用上rem；至于详细介绍，详细设置原理参考[使用sass与compass合并雪碧图][1]博文。我对它的进行了完善，博文里面说生成的雪碧图得手动来改:
+$bigWidth: 242px;
+$bigHeight: 270px;
+其实通过下面的方法可以获取雪碧图的大小.
+ceil(image-width(sprite-path($icons)))
+ceil(image-height(sprite-path($icons)))
+
+
+最后这里的配置有两个地方需要注意的：
+```
+“$base-fonts-default: 100px; //基准数”，
+```
+这里是rem的换算基准，我demo的js是按照750px设计稿，1px=0.01rem来换算的规则，如果你的项目不是按这个换算，这个数值就得改变；
+```
+@for $i from 1 through 2 {
+    .icons-#{$i} {
+       @include sprite ($icons,$i)
+    }
+}
+```
+这里是遍历出.icons-的样式，首先所有图标按照数字顺序命名，我这里只有2个图标，所以是through 2；如果有几十个图标就只改这里就行了。如此，就能以最快的效率完成一个以sass基础的雪碧图配置来开发需求。
+```
+.icons-1{}
+.icons-2{}
+.icons-3{}
+.icons-4{}
+```
+所有代码如下
+```
+@charset "UTF-8";
+@import "compass";
+@import "compass/utilities/sprites";
+$icons: sprite-map("icons/*.png", $spacing: 8px, $layout: horizontal);
+$base-fonts-default: 100px; //基准数
+@function rem($px) {
+    @if (type-of($px)=="number") {
+        @return $px / $base-fonts-default * 1rem;
+    }
+    @if (type-of($px)=="list") {
+        @if (nth($px, 1)==0 and nth($px, 2) !=0) {
+            @return 0 nth($px, 2) / $base-fonts-default * 1rem;
+        }
+        @else if (nth($px, 1)==0 and nth($px, 2)==0) {
+            @return 0 0;
+        }
+        @else if (nth($px, 1) !=0 and nth($px, 2)==0) {
+            @return nth($px, 1) / $base-fonts-default * 1rem 0;
+        }
+        @else {
+            @return nth($px, 1) / $base-fonts-default *1rem nth($px, 2) / $base-fonts-default * 1rem;
+        }
+    }
+}
+%same-style{
+	background-image: sprite-url($icons);
+	$bigWidth: ceil(image-width(sprite-path($icons)));
+	$bigHeight: ceil(image-height(sprite-path($icons)));
+	background-size: rem(($bigWidth, $bigHeight));
+	background-repeat: no-repeat;
+	display: inline-block;
+}
+@mixin sprite ($name) {
+    width: rem(image-width(sprite-file($icons, $name)));
+    height: rem(image-height(sprite-file($icons, $name)));
+    background-position: rem(sprite-position($icons, $name));
+    @extend %same-style;
+}
+
+
+@for $i from 1 through 2 {
+    .icons-#{$i} {
+       @include sprite ($i)
+    }
+}
+.other{@extend .icons-1}
+
+
+```
+
+ - 
 
 
   [1]: http://www.cnblogs.com/xljzlw/p/4771103.html
