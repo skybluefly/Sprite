@@ -25,7 +25,7 @@ pc端sprite的配置项如下：
 
 ```
 @import "compass";// 引入compass模块
-@import "compass/utilities/sprites"; // 引入compass模块
+@import "compass/utilities/sprites"; // 引入sprites模块
 $icons-spacing: 5px;  //每个图标的空隙，太挤会出现问题
 $icons-layout: smart; //图标排布的方式
 $icons-sprite-dimensions:true;//所有图标设置宽高
